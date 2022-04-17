@@ -485,20 +485,20 @@ export function dailyFights(): void {
           embezzlerLog.sources.push(nextFight.name);
         }
 
-        nextFight = getNextEmbezzlerFight();
+        const predictedNextFight = getNextEmbezzlerFight();
 
         // try to deliver the thesis
         const romanticMonsterImpossible =
           Counter.get("Romantic Monster Window end") === null ||
           (Counter.get("Romantic Monster Window begin") ?? -1) > 0 ||
           get("_romanticFightsLeft") <= 0;
-        if (romanticMonsterImpossible && (!nextFight || !nextFight.draggable)) {
+        if (romanticMonsterImpossible && (!predictedNextFight || !predictedNextFight.draggable)) {
           doSausage();
           // Check in case our prof gained enough exp during the profchains
           if (
             thesisReady() &&
             get("beGregariousFightsLeft") <= 0 &&
-            nextFight?.name !== "Orb Prediction"
+            predictedNextFight?.name !== "Orb Prediction"
           ) {
             deliverThesis();
           }
@@ -506,6 +506,7 @@ export function dailyFights(): void {
         }
         doGhost();
         startWandererCounter();
+        nextFight = getNextEmbezzlerFight();
       }
     });
   }
